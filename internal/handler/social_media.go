@@ -142,6 +142,7 @@ func (s *socialMediaHandlerImpl) EditSocialMedia(ctx *gin.Context) {
 	}
 
 	socialmediaUp := model.SocialMedia{}
+	socialmediaUp.ID = uint64(socialId)
 	socialmediaUp.Name = socialMediaUpdateReq.Name
 	socialmediaUp.SocialMediaUrl = socialMediaUpdateReq.SocialMediaUrl
 	socialmediaUp.UserId = social.UserId
