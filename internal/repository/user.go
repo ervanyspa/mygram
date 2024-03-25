@@ -9,7 +9,7 @@ import (
 type UserQuery interface {
 	GetUserByEmail(ctx context.Context, email string) (model.User, error)
 	GetUsersByID(ctx context.Context, id uint64) (model.User, error)
-	EditUser(ctx context.Context, user *model.User) error
+	EditUser(ctx context.Context, user model.User) error
 	DeleteUsersByID(ctx context.Context, id uint64) error
 	CreateUser(ctx context.Context, user model.User) (model.User, error)
 }
@@ -19,10 +19,10 @@ type UserCommand interface {
 }
 
 type userQueryImpl struct{
-	db infrastructure.GromPostgres
+	db infrastructure.GormPostgres
 }
 
-func NewUserQuery(db infrastructure.GromPostgres) UserQuery {
+func NewUserQuery(db infrastructure.GormPostgres) UserQuery {
 	return &userQueryImpl{db: db}
 }
 
@@ -65,7 +65,7 @@ func (u *userQueryImpl) GetUserByEmail(ctx context.Context, email string) (model
 	return user, nil
 }
 
-func (u *userQueryImpl) EditUser(ctx context.Context, user *model.User) error {
+func (u *userQueryImpl) EditUser(ctx context.Context, user model.User) error {
 	db := u.db.GetConnection()
 	if err := db.
 		WithContext(ctx).

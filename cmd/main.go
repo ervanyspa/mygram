@@ -62,22 +62,39 @@ func main() {
 		ctx.JSON(http.StatusOK, map[string]any{"token": token})
 	})
 
-	usersGroup := g.Group("/users")
-
+	gorm := infrastructure.NewGormPostgres()
+	
 	// usersGroup.Use(middleware.CheckAuthBasic)
 	// usersGroup.Use(middleware.CheckAuthBearer)
 	
-
+	
+	usersGroup := g.Group("/users")
 	// dependency injection
-	gorm := infrastructure.NewGormPostgres()
 	userRepo := repository.NewUserQuery(gorm)
 	userSvc := service.NewUserService(userRepo)
 	userHdl := handler.NewUserHandler(userSvc)
 	userRouter := router.NewUserRouter(usersGroup, userHdl)
-
-	
 	// mount
 	userRouter.Mount()
+
+
+	photosGroup := g.Group("/photos")
+	photoRepo := repository.NewPhotoQuery(gorm)
+	photoSvc := service.NewPhotoService(photoRepo)
+	photoHdl := handler.NewPhotoHandler(photoSvc)
+	photoRouter := router.NewPhotoRouter(photosGroup, photoHdl)
+	photoRouter.Mount()
+
+	commentsGroup := g.Group("/comments")
+	commentRepo := repository.NewCommentQuery(gorm)
+	commentSvc := service.NewCommentService(commentRepo)
+	commentHdl := handler.NewCommentHandler(commentSvc, photoSvc)
+	commentRouter := router.NewCommentRouter(commentsGroup, commentHdl)
+	commentRouter.Mount()
+
+	
+
+	
 	// swagger
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

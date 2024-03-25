@@ -43,6 +43,12 @@ type UserResponse struct {
 	UpdatedAt time.Time	`json:"updated_at"`
 }
 
+type UserRelation struct {
+	ID       uint64 `json:"id"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+}
+
 func (u UserSignUp) Validate() error {
 	validate := validator.New()
 

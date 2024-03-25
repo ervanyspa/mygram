@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type GromPostgres interface{
+type GormPostgres interface{
 	GetConnection() *gorm.DB
 }
 
@@ -15,7 +15,7 @@ type gormPostgresImpl struct{
 	master	*gorm.DB
 }
 
-func NewGormPostgres() GromPostgres{
+func NewGormPostgres() GormPostgres{
 	return &gormPostgresImpl{
 		master: connect(),
 	}

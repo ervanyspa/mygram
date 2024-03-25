@@ -91,7 +91,7 @@ func (u *userServiceImpl) EditUser(ctx context.Context, user model.User) (model.
 		return model.UserResponse{}, errors.New("email already in use")
 	}
 	
-	err = u.repo.EditUser(ctx, &user)
+	err = u.repo.EditUser(ctx, user)
 	if err != nil {
 		return model.UserResponse{}, err
 	}
